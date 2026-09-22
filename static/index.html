@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CropYield AI — Explainable Climate-Aware Crop Yield Predictor</title>
+  <meta name="description" content="Predict agricultural crop yield using machine learning models trained on climate data. Features SHAP explainability and multi-model comparison." />
+  <link rel="stylesheet" href="/static/css/style.css" />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ctext x='2' y='26' font-size='28'%3E🌾%3C/text%3E%3C/svg%3E" />
+</head>
+<body>
+
+  <!-- ===== Navigation ===== -->
+  <nav class="top-nav" id="navbar">
+    <div class="container">
+      <a href="#" class="top-nav__brand">
+        <svg class="spike-mark" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 3C8 3 4 7 4 12C4 17 8 21 12 21C16 21 20 17 20 12C20 7 16 3 12 3ZM12 19C8.7 19 6 15.9 6 12C6 9.5 7.5 7.3 9.7 6.3C9.3 7.8 9.3 9.4 9.8 10.9C10.5 13 12 14.5 14.1 15.2C13.2 17.4 11.2 19 12 19Z" fill="#4a7c59"/>
+          <path d="M12 7V17M12 12L15 9M12 14L9 11" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+        CropYield AI
+      </a>
+      <ul class="top-nav__links">
+        <li><a href="#predict" class="active">Predict Yield</a></li>
+        <li><a href="#feature-comparison">Feature Comparison</a></li>
+        <li><a href="#explainability">SHAP Analysis</a></li>
+      </ul>
+      <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Toggle menu" aria-expanded="false">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <path d="M3 6h18M3 12h18M3 18h18"/>
+        </svg>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Mobile Menu -->
+  <div class="mobile-menu hidden" id="mobile-menu">
+    <ul>
+      <li><a href="#predict">Predict Yield</a></li>
+      <li><a href="#feature-comparison">Feature Comparison</a></li>
+      <li><a href="#explainability">SHAP Analysis</a></li>
+    </ul>
+  </div>
+
+  <!-- ===== Hero Section ===== -->
+  <section class="hero" id="hero">
+    <div class="container">
+      <div class="hero__grid">
+        <div class="fade-in">
+          <span class="badge badge--coral">Machine Learning · Explainable AI</span>
+          <h1 style="margin-top: 20px;">Climate-Aware<br/>Crop Yield Prediction</h1>
+          <p class="hero__subtitle">
+            Input your crop location, soil, and climate parameters to calculate real-time yield predictions using trained machine learning algorithms (XGBoost, Random Forest, LightGBM).
+          </p>
+          <div class="hero__actions">
+            <a href="#predict" class="btn btn--primary btn--lg">Enter Input Parameters</a>
+            <a href="#metrics" class="btn btn--secondary btn--lg">View Model Performance</a>
+          </div>
+        </div>
+        <div class="hero__visual fade-in">
+          <div class="hero__visual-card">
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:16px;">
+              <span style="width:10px;height:10px;border-radius:50%;background:#c64545;"></span>
+              <span style="width:10px;height:10px;border-radius:50%;background:#e8a55a;"></span>
+              <span style="width:10px;height:10px;border-radius:50%;background:#5db872;"></span>
+              <span style="font-size:13px;color:#6c6a64;margin-left:8px;">live_prediction.py</span>
+            </div>
+            <pre class="code-block"><span class="cmt"># Live Prediction Engine</span>
+<span class="kw">import</span> joblib
+<span class="kw">import</span> numpy <span class="kw">as</span> np
+
+<span class="cmt"># Load trained model artifacts</span>
+model <span class="op">=</span> joblib.<span class="fn">load</span>(<span class="str">"xgboost.pkl"</span>)
+prep  <span class="op">=</span> joblib.<span class="fn">load</span>(<span class="str">"preprocessor.pkl"</span>)
+
+<span class="cmt"># Transform user inputs</span>
+X_user <span class="op">=</span> prep.<span class="fn">transform</span>(user_input_df)
+
+<span class="cmt"># Execute model prediction</span>
+predicted_yield <span class="op">=</span> model.<span class="fn">predict</span>(X_user)[0]
+<span class="cmt"># → Result: Calculated directly from user inputs!</span></pre>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Dataset Stats Bar ===== -->
+  <section class="stats-bar" id="stats-bar">
+    <div class="container">
+      <div class="stats-bar__grid">
+        <div class="stat-item">
+          <div class="stat-item__label">Training Records</div>
+          <div class="stat-item__value loading-pulse" id="stat-records">—</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-item__label">Supported Crops</div>
+          <div class="stat-item__value loading-pulse" id="stat-crops">—</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-item__label">Districts</div>
+          <div class="stat-item__value loading-pulse" id="stat-districts">—</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-item__label">Year Range</div>
+          <div class="stat-item__value loading-pulse" id="stat-years">—</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-item__label">Trained ML Models</div>
+          <div class="stat-item__value loading-pulse" id="stat-models">—</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-item__label">Active Model</div>
+          <div class="stat-item__value loading-pulse" id="stat-primary" style="font-size:18px;">—</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Prediction Form Section ===== -->
+  <section class="section section--card" id="predict">
+    <div class="container">
+      <div class="section-header fade-in">
+        <span class="badge badge--cream">Live Prediction Engine</span>
+        <h2 style="margin-top:12px;">Input Custom Parameters</h2>
+        <p>Fill in the form below with your specific crop, district, and climate values. The model will calculate your crop yield estimate directly from your input.</p>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:32px;align-items:start;">
+        <!-- Form Column -->
+        <div class="card card--canvas fade-in" style="padding:32px;">
+          <form id="prediction-form" autocomplete="off">
+            <!-- Crop & Location -->
+            <div class="caption-uppercase muted mb-md">1. Crop & Location Setup</div>
+            <div class="form-group">
+              <label for="crop">Select Crop</label>
+              <select class="form-select" id="crop" name="crop" required>
+                <option value="">Loading crops…</option>
+              </select>
+            </div>
+            <div class="input-row">
+              <div class="form-group">
+                <label for="district">District</label>
+                <select class="form-select" id="district" name="district" required>
+                  <option value="">Loading districts…</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="season">Season</label>
+                <select class="form-select" id="season" name="season" required>
+                  <option value="">Loading seasons…</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="area">Cultivation Area <span class="unit">(hectares)</span></label>
+              <input class="form-input" type="number" id="area" name="area" value="5000" min="1" step="100" required />
+            </div>
+
+            <hr style="border:none;border-top:1px solid var(--hairline);margin:24px 0;" />
+
+            <!-- Climate Parameters -->
+            <div class="caption-uppercase muted mb-md">2. Climate & Environmental Factors</div>
+            <div class="input-row">
+              <div class="form-group">
+                <label for="temperature_avg">Avg Temperature <span class="unit">(°C)</span></label>
+                <input class="form-input" type="number" id="temperature_avg" name="temperature_avg" value="28.0" step="0.1" required />
+              </div>
+              <div class="form-group">
+                <label for="temperature_min">Min Temperature <span class="unit">(°C)</span></label>
+                <input class="form-input" type="number" id="temperature_min" name="temperature_min" value="22.0" step="0.1" required />
+              </div>
+            </div>
+            <div class="input-row">
+              <div class="form-group">
+                <label for="temperature_max">Max Temperature <span class="unit">(°C)</span></label>
+                <input class="form-input" type="number" id="temperature_max" name="temperature_max" value="34.0" step="0.1" required />
+              </div>
+              <div class="form-group">
+                <label for="rainfall">Rainfall <span class="unit">(mm)</span></label>
+                <input class="form-input" type="number" id="rainfall" name="rainfall" value="400" step="1" required />
+              </div>
+            </div>
+            <div class="input-row">
+              <div class="form-group">
+                <label for="humidity">Relative Humidity <span class="unit">(%)</span></label>
+                <input class="form-input" type="number" id="humidity" name="humidity" value="72" step="1" min="0" max="100" required />
+              </div>
+              <div class="form-group">
+                <label for="solar_radiation">Solar Radiation <span class="unit">(MJ/m²/day)</span></label>
+                <input class="form-input" type="number" id="solar_radiation" name="solar_radiation" value="19.5" step="0.1" required />
+              </div>
+            </div>
+            <div class="input-row">
+              <div class="form-group">
+                <label for="wind_speed">Wind Speed <span class="unit">(km/h)</span></label>
+                <input class="form-input" type="number" id="wind_speed" name="wind_speed" value="12" step="0.1" required />
+              </div>
+              <div class="form-group">
+                <label for="soil_moisture">Soil Moisture <span class="unit">(%)</span></label>
+                <input class="form-input" type="number" id="soil_moisture" name="soil_moisture" value="26" step="0.1" min="0" max="100" required />
+              </div>
+            </div>
+
+            <hr style="border:none;border-top:1px solid var(--hairline);margin:24px 0;" />
+
+            <!-- Feature Comparison Pair Selection -->
+            <div class="caption-uppercase muted mb-md">3. Climate Feature Pairwise Comparison</div>
+            <div class="input-row">
+              <div class="form-group">
+                <label for="feature-a-select">Primary Factor (A)</label>
+                <select class="form-select" id="feature-a-select" name="feature_a">
+                  <option value="Soil_Moisture" selected>Soil Moisture (%)</option>
+                  <option value="Rainfall_Precipitation">Rainfall (mm)</option>
+                  <option value="Temperature_Avg">Avg Temperature (°C)</option>
+                  <option value="Temperature_Max">Max Temperature (°C)</option>
+                  <option value="Temperature_Min">Min Temperature (°C)</option>
+                  <option value="Relative_Humidity">Relative Humidity (%)</option>
+                  <option value="Solar_Radiation">Solar Radiation (MJ/m²)</option>
+                  <option value="Wind_Speed">Wind Speed (km/h)</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="feature-b-select">Secondary Factor (B)</label>
+                <select class="form-select" id="feature-b-select" name="feature_b">
+                  <option value="Rainfall_Precipitation" selected>Rainfall (mm)</option>
+                  <option value="Soil_Moisture">Soil Moisture (%)</option>
+                  <option value="Temperature_Avg">Avg Temperature (°C)</option>
+                  <option value="Temperature_Max">Max Temperature (°C)</option>
+                  <option value="Temperature_Min">Min Temperature (°C)</option>
+                  <option value="Relative_Humidity">Relative Humidity (%)</option>
+                  <option value="Solar_Radiation">Solar Radiation (MJ/m²)</option>
+                  <option value="Wind_Speed">Wind Speed (km/h)</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Buttons -->
+            <div class="form-actions">
+              <button type="submit" class="btn btn--primary btn--lg" id="predict-btn">
+                ⚡ Calculate & Compare Features
+              </button>
+              <button type="button" class="btn btn--secondary btn--lg" id="reset-btn">
+                Clear Form
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Result Column -->
+        <div id="result-container">
+          <!-- Placeholder -->
+          <div class="result-card fade-in" id="result-placeholder">
+            <div style="text-align:center;padding:64px 0;">
+              <svg width="56" height="56" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin-bottom:16px;opacity:0.3;">
+                <path d="M24 4L14 14L6 16L12 26L10 38L24 34L38 38L36 26L42 16L34 14L24 4Z" stroke="currentColor" stroke-width="1.5" fill="none"/>
+              </svg>
+              <p class="title-md" style="color:var(--on-dark-soft);">Awaiting Your Input</p>
+              <p class="body-sm" style="color:var(--muted-soft);margin-top:8px;">Fill in your parameters on the left and click "Calculate & Compare Features".</p>
+            </div>
+          </div>
+
+          <!-- Live Result Card -->
+          <div class="result-card hidden" id="result-output">
+            <div class="flex justify-between items-center" style="margin-bottom:20px;">
+              <div>
+                <div class="caption-uppercase" style="color:var(--on-dark-soft);margin-bottom:4px;">Predicted Yield Output</div>
+                <div class="result-card__yield" id="result-yield">—</div>
+              </div>
+              <span class="badge badge--coral" id="result-model-badge">XGBoost Engine</span>
+            </div>
+
+            <div class="result-card__meta" id="result-meta">
+              <!-- Populated by JS -->
+            </div>
+
+            <!-- Historical Range Context -->
+            <div class="result-card__context" id="result-context" style="display:none;">
+              <div class="context-label">Yield Position vs. Historical Crop Bounds</div>
+              <div class="context-bar">
+                <div class="context-bar__fill" id="context-fill" style="width:0%;"></div>
+                <div class="context-bar__marker" id="context-marker" style="left:0%;"></div>
+              </div>
+              <div class="context-range">
+                <span id="context-min">—</span>
+                <span style="color:var(--on-dark-soft);font-size:12px;">▲ Historical Average</span>
+                <span id="context-max">—</span>
+              </div>
+            </div>
+
+            <!-- Input Feature Contribution Analysis for User Input -->
+            <div class="multi-model-container" id="input-breakdown-container" style="margin-top:20px;display:none;">
+              <div class="context-label" style="margin-bottom:12px;color:var(--on-dark);">Input Feature Impact Breakdown</div>
+              <div id="input-breakdown-list" style="display:flex;flex-direction:column;gap:8px;">
+                <!-- Populated dynamically from backend -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Feature Comparison Section ===== -->
+  <section class="section section--dark" id="feature-comparison">
+    <div class="container">
+      <div class="section-header fade-in">
+        <span class="badge badge--nature">Climate Factor Analysis</span>
+        <h2 style="margin-top:12px;color:var(--on-dark);">Climate Feature Interaction & Comparison</h2>
+        <p>Comparative evaluation of climate feature pairs and their coupled impact (+/- kg/ha) on crop yield outcomes.</p>
+      </div>
+
+      <div id="feature-comparison-container" class="card card--dark fade-in" style="padding:32px;">
+        <div style="text-align:center;color:var(--on-dark-soft);padding:32px 0;" id="feature-comparison-placeholder">
+          Submit the prediction form above to evaluate pairwise climate feature interactions.
+        </div>
+        <div id="feature-comparison-content" class="hidden" style="display:flex;flex-direction:column;gap:24px;">
+          <!-- Populated by JS -->
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== SHAP / Explainability ===== -->
+  <section class="section" id="explainability">
+    <div class="container">
+      <div class="section-header fade-in">
+        <span class="badge badge--teal">Global Model Explainability</span>
+        <h2 style="margin-top:12px;">Global Climate Factor SHAP Ranking</h2>
+        <p>Global baseline decomposition of climate factors across all 18,445 dataset records. <em>(For custom input-specific impacts, enter your values above and calculate a prediction).</em></p>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:32px;">
+        <div class="card card--dark fade-in" style="padding:32px;">
+          <div class="title-md" style="color:var(--on-dark);margin-bottom:24px;">Global Feature Importance Ranking</div>
+          <div class="shap-chart" id="shap-chart">
+            <div class="loading-pulse" style="height:240px;"></div>
+          </div>
+        </div>
+        <div class="card card--dark fade-in" style="padding:32px;">
+          <div class="title-md" style="color:var(--on-dark);margin-bottom:24px;">SHAP Analytical Insights</div>
+          <div id="shap-insights" style="display:flex;flex-direction:column;gap:16px;">
+            <div class="loading-pulse" style="height:240px;"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Footer ===== -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer__grid">
+        <div>
+          <div class="footer__brand">🌾 CropYield AI</div>
+          <p class="footer__desc">
+            An explainable machine learning pipeline predicting agricultural crop yield based on climate factors.
+          </p>
+        </div>
+        <div class="footer__col">
+          <div class="footer__col-title">Navigation</div>
+          <ul>
+            <li><a href="#predict">Predict Yield</a></li>
+            <li><a href="#metrics">Model Comparison</a></li>
+            <li><a href="#explainability">SHAP Analysis</a></li>
+          </ul>
+        </div>
+        <div class="footer__col">
+          <div class="footer__col-title">Models</div>
+          <ul>
+            <li><a href="#">XGBoost Regressor</a></li>
+            <li><a href="#">Random Forest</a></li>
+            <li><a href="#">LightGBM</a></li>
+            <li><a href="#">Ridge / Linear</a></li>
+          </ul>
+        </div>
+        <div class="footer__col">
+          <div class="footer__col-title">Frameworks</div>
+          <ul>
+            <li><a href="#">Scikit-Learn</a></li>
+            <li><a href="#">SHAP Explainer</a></li>
+            <li><a href="#">Flask Backend</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer__bottom">
+        &copy; 2025 CropYield AI — Explainable Machine Learning Based Analysis of Climate Factors Affecting Crop Yield
+      </div>
+    </div>
+  </footer>
+
+  <script src="/static/js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,9 @@
+Climate Factor,Pearson Corr (r),Spearman Rank (rho),Model Native Importance (%),SHAP Importance (%),Identified Marginal Contribution
+Soil_Moisture,0.007,-0.022,14.48,26.8,Variable
+Rainfall_Precipitation,0.275,0.121,8.92,21.36,Positive / Saturation Threshold
+Solar_Radiation,0.048,0.149,4.93,19.32,Positive / Non-linear
+Relative_Humidity,-0.017,-0.09,57.34,11.5,Variable
+Temperature_Min,0.008,0.083,1.37,8.24,Thresholded
+Temperature_Avg,0.06,0.115,4.91,6.16,Thresholded
+Temperature_Max,0.093,0.133,2.93,3.35,Thresholded
+Wind_Speed,-0.026,-0.049,5.13,3.28,Negative / Non-linear
