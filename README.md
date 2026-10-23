@@ -1,4 +1,4 @@
-# 🌾 CropYield AI — Climate-Aware Crop Yield Predictor
+#  CropYield AI — Climate-Aware Crop Yield Predictor
 
 An **Explainable Machine Learning (XAI) System** for predicting agricultural crop yields based on micro-climate parameters and regional agricultural variables, featuring real-time feature interaction analysis and SHAP feature attribution.
 
@@ -9,7 +9,7 @@ An **Explainable Machine Learning (XAI) System** for predicting agricultural cro
 
 ---
 
-## 🌟 Key Features
+##  Key Features
 
 * **⚡ Real-Time Yield Prediction**: Calculates crop yield outputs ($kg/ha$ & $tonnes/ha$) dynamically from live user inputs across 23 major crops, 31 districts, and 4 seasons.
 * **🔍 Dual SHAP Explainability**:
@@ -17,20 +17,18 @@ An **Explainable Machine Learning (XAI) System** for predicting agricultural cro
   * **Live Input Impact Breakdown**: Computes exact $+ / - \text{ kg/ha}$ contribution for each specific weather variable.
 * **🌿 Climate Feature Interaction & Comparison**: Evaluates pairwise climate interactions (e.g. *Soil Moisture vs Rainfall*, *Soil Moisture vs Max Temperature*) to identify coupled climate stress leverage.
 * **📊 Historical Range Context**: Contextualizes yield outputs against historical minimum, average, and maximum bounds for the selected crop.
-* **🎨 Pastel Nature UI**: Modern, responsive dashboard design system built with custom CSS tokens.
-
 ---
 
-## ⚙️ Tech Stack
+##  Tech Stack
 
 * **Machine Learning**: XGBoost ($R^2 \approx 0.952$), Random Forest ($R^2 \approx 0.948$), LightGBM ($R^2 \approx 0.935$), Scikit-Learn.
 * **Explainable AI**: SHAP (SHapley Additive exPlanations).
 * **Backend**: Python 3.9+, Flask WSGI Server.
-* **Frontend**: HTML5, Custom CSS3 (Pastel Nature Theme), JavaScript (ES6+).
+* **Frontend**: HTML5, Custom CSS3, JavaScript (ES6+).
 
 ---
 
-## 📁 Dataset Characteristics
+##  Dataset Characteristics
 
 * **Integrated Records**: 18,445 clean agricultural records (1997–2013).
 * **Regional Scope**: 31 Districts (Tamil Nadu region).
@@ -39,7 +37,7 @@ An **Explainable Machine Learning (XAI) System** for predicting agricultural cro
 
 ---
 
-## 🚀 How to Run Locally
+## How to Run Locally
 
 ### 1. Clone the Repository
 ```bash
@@ -65,6 +63,3 @@ python app.py
 Open **[http://127.0.0.1:5000](http://127.0.0.1:5000)** in your web browser.
 
 ---
-
-## 📄 License & Attribution
-Developed for Explainable Machine Learning Based Analysis of Climate Factors Affecting Crop Yield.
